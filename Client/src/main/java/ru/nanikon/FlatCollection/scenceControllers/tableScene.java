@@ -53,7 +53,8 @@ public class tableScene {
                 LinkedList<Flat> collection = CommandController.updateCollection();
                 ObservableList<Flat> list = FXCollections.observableList(collection);
                 showTable.setItems(list);
-            } catch (IllegalStateException ignored) {}
+                App.setCollection(collection);
+            } catch (IllegalStateException | ClassCastException ignored) {}
         }
 
     };
@@ -103,12 +104,12 @@ public class tableScene {
         removeByIdButton.setText(App.getRB().getString("remove_by_id"));
         removeAnyByTransportButton.setText(App.getRB().getString("remove_any_by_transport"));
         clearButton.setText(App.getRB().getString("clear"));
-        filterButton.setText(App.getRB().getString("filter"));
+        //filterButton.setText(App.getRB().getString("filter"));
         averageButton.setText(App.getRB().getString("average"));
         infoButton.setText(App.getRB().getString("info"));
         historyButton.setText(App.getRB().getString("history"));
         helpButton.setText(App.getRB().getString("help"));
-        executeScriptButton.setText(App.getRB().getString("execute_script"));
+        //executeScriptButton.setText(App.getRB().getString("execute_script"));
         asWhoLabel.setText(App.getRB().getString("as_who"));
         currentLoginLabel.setText(App.getLogin());
 
@@ -133,12 +134,12 @@ public class tableScene {
     }
 
     private void timerUpdateMethod(){
-        timer.scheduleAtFixedRate(task, new Date(), 1000L);
+        timer.scheduleAtFixedRate(task, new Date(), 2000L);
     }
 
     public void changeView(ActionEvent event) {
         stopTimer();
-        CommandController.stopConnection();
+        //CommandController.stopConnection();
         try {
             Thread.sleep(1000);
         } catch (InterruptedException e) {
@@ -205,5 +206,17 @@ public class tableScene {
 
     public void addElement(ActionEvent event) {
         AddStage.startAdd();
+    }
+
+    public void removeByIdStart(ActionEvent actionEvent) {
+        IdStage.startRemove();
+    }
+
+    public void updateElement(ActionEvent event) {
+        IdStage.startUpdate();
+    }
+
+    public void removeByTransportStart(ActionEvent actionEvent) {
+        TransportStage.startDelete();
     }
 }

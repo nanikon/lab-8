@@ -30,11 +30,12 @@ public class UpdateCommand implements Command, Serializable {
         ServerAnswer<String> result = new ServerAnswer<>();
         if (!manager.chekUser(login, password)) {
             result.setStatus(false);
-            result.setMessage("Ой, вы там в приложении что-то напортачили и мы то ли логин не найдем, то ли пароль для него не тот. Перезайдите нормально!");
+            result.setMessage("login_password_wrong");
+        } else {
+            int id = ((IntArg) params[0]).getValue();
+            FlatBuilder oldBuilder = ((FlatArg) params[1]).getBuilder();
+            result = manager.updateById(id, login, oldBuilder);
         }
-        int id = ((IntArg) params[0]).getValue();
-        FlatBuilder oldBuilder = ((FlatArg) params[1]).getBuilder();
-        String results = manager.updateById(id, login, oldBuilder);
         return result;
     }
 

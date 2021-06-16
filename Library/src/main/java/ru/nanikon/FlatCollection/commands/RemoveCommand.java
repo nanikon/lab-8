@@ -25,13 +25,15 @@ public class RemoveCommand implements Command, Serializable {
      */
     @Override
     public ServerAnswer<String> execute(DBManager manager) {
-        ServerAnswer<String> result = new ServerAnswer<>(); //TODO: переделать! надо возвращать коллекцию измененную
+        ServerAnswer<String> result = new ServerAnswer<>();
         if (!manager.chekUser(login, password)) {
             result.setStatus(false);
             result.setMessage("Ой, вы там в приложении что-то напортачили и мы то ли логин не найдем, то ли пароль для него не тот. Перезайдите нормально!");
+            result.setAnswer("Ой, вы там в приложении что-то напортачили и мы то ли логин не найдем, то ли пароль для него не тот. Перезайдите нормально!");
+        } else {
+            int id = ((IntArg) params[0]).getValue();
+            result = manager.deleteById(id, login);
         }
-        int id = ((IntArg) params[0]).getValue();
-        result.setAnswer(manager.deleteById(id, login));
         return result;
     }
 

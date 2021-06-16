@@ -470,17 +470,19 @@ public class DBManager {
         return result;
     }
 
-    public String deleteById(int id, String login) {
-        String result = "";
+    public ServerAnswer<String> deleteById(int id, String login) {
+        ServerAnswer<String> result = new ServerAnswer<>();
         Lock wlock = lock.writeLock();
         wlock.lock();
         try (PreparedStatement results = connection.prepareStatement(Requests.DELETE_FLAT.QUERY)) {
             results.setInt(1, id);
             results.setString(2, login);
             if (results.executeUpdate() == 0) {
-                result = "Не удалось удалить элемент: он не принадлежит вам, или не найден стаким id";
+                result.setStatus(false);
+                result.setAnswer("delete_not_found");
             } else {
-                result = "Элемент успешно удален";
+                result.setStatus(true);
+                result.setAnswer("delete_success");
             }
             connection.commit();
             initialCollection();
@@ -488,17 +490,19 @@ public class DBManager {
             try {
                 connection.rollback();
             } catch (SQLException ignored) {}
-            result = "Не удалось удалить элемент по неизвестной причине. Попробуйте позднее";
+            result.setStatus(false);
+            result.setAnswer("delete_wrong");
         } catch (Exception e) {
-            return "Там это, БД сломали, глянь посмотри: " + e.getMessage();
+            result.setStatus(false);
+            result.setAnswer("delete_wrong");
         } finally {
             wlock.unlock();
         }
         return result;
     }
 
-    public String deleteByTransport(String transport, String login) {
-        String result = "";
+    public ServerAnswer<String> deleteByTransport(String transport, String login) {
+        ServerAnswer<String> result = new ServerAnswer<>();
         Lock wlock = lock.writeLock();
         wlock.lock();
         try {
@@ -506,24 +510,32 @@ public class DBManager {
             flats.setString(1, login);
             flats.setString(2, transport);
             ResultSet result1 = flats.executeQuery();
-            if (!result1.next()) { return "У вас нет элемента с таким видом транспорта"; }
-            PreparedStatement result2 = connection.prepareStatement(Requests.DELETE_FLAT.QUERY);
-            result2.setInt(1, result1.getInt("id"));
-            result2.setString(2, login);
-            if (result2.executeUpdate() == 0) {
-                result = "Не удалось удалить элемент: он не принадлежит вам, или не найден стаким id";
+            if (!result1.next()) {
+                result.setStatus(false);
+                result.setAnswer("not_found_flat_transport");
             } else {
-                result = "Элемент успешно удален";
+                PreparedStatement result2 = connection.prepareStatement(Requests.DELETE_FLAT.QUERY);
+                result2.setInt(1, result1.getInt("id"));
+                result2.setString(2, login);
+                if (result2.executeUpdate() == 0) {
+                    result.setStatus(false);
+                    result.setAnswer("delete_not_found");
+                } else {
+                    result.setStatus(true);
+                    result.setAnswer("delete_success");
+                }
+                connection.commit();
+                initialCollection();
             }
-            connection.commit();
-            initialCollection();
         } catch (SQLException e) {
             try {
                 connection.rollback();
             } catch (SQLException ignored) {}
-            result = "Не удалось удалить элемент по неизвестной причине. Попробуйте позднее";
+            result.setStatus(false);
+            result.setAnswer("delete_wrong");
         } catch (Exception e) {
-            return "Там это, БД сломали, глянь посмотри: " + e.getMessage();
+            result.setStatus(false);
+            result.setAnswer("delete_wrong");
         } finally {
             wlock.unlock();
         }
@@ -580,8 +592,8 @@ public class DBManager {
         return result;
     }
 
-    public String updateById(int id, String login, FlatBuilder builder) {
-        String result = "";
+    public ServerAnswer<String> updateById(int id, String login, FlatBuilder builder) {
+        ServerAnswer<String> result = new ServerAnswer<>();
         Lock wlock = lock.writeLock();
         wlock.lock();
         try (PreparedStatement statement = connection.prepareStatement(Requests.UPDATE_FLAT.QUERY)) {
@@ -608,22 +620,27 @@ public class DBManager {
             statement.setInt(10, id);
             statement.setString(11, login);
             if (statement.executeUpdate() == 0) {
-                result = "Элемент с таким id не принадлежит вам";
+                result.setStatus(false);
+                result.setAnswer("update_not_found");
             } else {
-                result = "Элемент с id " + id + " успешно обновлен";
+                result.setStatus(true);
+                result.setAnswer("update_success");
             }
             connection.commit();
             initialCollection();
         } catch (SQLException throwables) {
-            result = "Не удалось обносить элемент по непонятной причине. Повторите попытку позднее";
+            result.setStatus(false);
+            result.setAnswer("update_wrong");
             try {
                 connection.rollback();
             } catch (SQLException ignored) {
             }
         } catch (NullPointerException e) {
-            result = "Элемент с id " + id + " не найден";
+            result.setStatus(false);
+            result.setAnswer("update_not_found");
         } catch (Exception e) {
-            result = "Там это, БД сломали, глянь посмотри: " + e.getMessage();
+            result.setStatus(false);
+            result.setAnswer("update_wrong");
             e.printStackTrace();
         } finally {
             wlock.unlock();

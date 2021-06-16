@@ -10,6 +10,7 @@ public class Text_ru_RU extends ListResourceBundle {
             {"slovakLanguage", "Словацкий"},
             {"danishLanguage", "Датский"},
             {"spanishLanguage", "Испанский (Эквадор)"},
+            {"englishLanguage", "Английский"},
             {"exit", "Выход"},
             {"logIn", "Авторизация"},
             {"register", "Регистрация"},
@@ -91,7 +92,16 @@ public class Text_ru_RU extends ListResourceBundle {
             {"not_null", "не может быть пустым"},
             {"must_double_number", "должно быть вещественным числом"},
             {"must_int_number", "должно быть целым числом"},
-            {"must_int_plus_number", "должно быть натуральным числом"}
+            {"must_int_plus_number", "должно быть натуральным числом"},
+            {"get_id", "Введите id:"},
+            {"delete_success", "Элемент успешно удален"},
+            {"delete_not_found", "Не удалось удалить элемент: он не принадлежит вам, или не найден стаким id"},
+            {"delete_wrong", "Не удалось удалить элемент по неизвестной причине. Попробуйте позднее"},
+            {"update_not_found", "Элемента с таким id не существует или он не ваш (ха-ха)"},
+            {"update_success", "Элемент успешно обновлен"},
+            {"update_wrong", "Не удалось обносить элемент по непонятной причине. Повторите попытку позднее"},
+            {"get_transport", "Введите транспорт"},
+            {"not_found_flat_transport", "У вас нет элемента с таким видом транспорта"}
 
 
 

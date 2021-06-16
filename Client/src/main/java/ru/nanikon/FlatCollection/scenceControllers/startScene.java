@@ -35,6 +35,7 @@ public class startScene {
         selectLocal.getItems().add(1, Language.SLOVAK);
         selectLocal.getItems().add(2, Language.DANISH);
         selectLocal.getItems().add(3, Language.SPANISH);
+        selectLocal.getItems().add(4, Language.ENGLISH);
         isInitialized = true;
     }
 

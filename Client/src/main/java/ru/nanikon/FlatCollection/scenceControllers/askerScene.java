@@ -2,13 +2,16 @@ package ru.nanikon.FlatCollection.scenceControllers;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.Node;
 import javafx.scene.control.*;
+import javafx.stage.Stage;
 import ru.nanikon.FlatCollection.App;
 import ru.nanikon.FlatCollection.CommandController;
 import ru.nanikon.FlatCollection.Language;
 import ru.nanikon.FlatCollection.arguments.FlatArg;
 import ru.nanikon.FlatCollection.commands.Command;
 import ru.nanikon.FlatCollection.commands.ServerAnswer;
+import ru.nanikon.FlatCollection.data.Flat;
 import ru.nanikon.FlatCollection.data.FlatBuilder;
 import ru.nanikon.FlatCollection.data.Transport;
 import ru.nanikon.FlatCollection.data.View;
@@ -41,10 +44,11 @@ public class askerScene {
     public Button applyButton;
     public TextField houseNameField;
 
+    private boolean isUpdate = false;
+
     @FXML
     public void initialize() {
         initLabels();
-
     }
 
     private void initLabels() {
@@ -73,9 +77,35 @@ public class askerScene {
         numberFloorsLabel.setText(App.getRB().getString("numberOfFloors"));
     }
 
+    public void setFlat(Flat flat) {
+        isUpdate = true;
+        nameField.setText(flat.getName());
+        xField.setText(String.valueOf(flat.getX()));
+        yField.setText(String.valueOf(flat.getY()));
+        areaField.setText(String.valueOf(flat.getArea()));
+        numberRoomsField.setText(String.valueOf(flat.getNumberOfRooms()));
+        centralHeatingBox.setSelected(flat.isCentralHeating());
+        viewSelect.setValue(flat.getView());
+        transportSelect.setValue(flat.getTransport());
+        houseNameField.setText(flat.getHouseName());
+        yearField.setText(String.valueOf(flat.getYear()));
+        numberFloorsField.setText(String.valueOf(flat.getNumberOfFloors()));
+    }
+
+    public void setAdd() {
+        isUpdate = false;
+    }
+
     public void getElement(ActionEvent event) {
-        Command command = CommandController.commandMap.get("add");
-        FlatBuilder builder = ((FlatArg) command.getArgs()[0]).getBuilder();
+        Command command;
+        FlatBuilder builder;
+        if (isUpdate) {
+            command = CommandController.commandMap.get("update");
+            builder = ((FlatArg) command.getArgs()[1]).getBuilder();
+        } else {
+            command = CommandController.commandMap.get("add");
+            builder = ((FlatArg) command.getArgs()[0]).getBuilder();
+        }
         builder.reset();
         try {
             builder.setName(nameField.getText());
@@ -93,7 +123,7 @@ public class askerScene {
             return;
         }
         try {
-            builder.setY(xField.getText());
+            builder.setY(yField.getText());
         } catch (NullPointerException e) {
             MessageStage.startErrorMessageStage(App.getRB().getString("y") + " " + App.getRB().getString("not_null"));
             return;
@@ -138,9 +168,15 @@ public class askerScene {
             MessageStage.startErrorMessageStage(App.getRB().getString("numberOfFloors") + " " + App.getRB().getString("must_int_plus_number"));
             return;
         }
-        ((FlatArg) command.getArgs()[0]).setValue("");
+        if (isUpdate) {
+            ((FlatArg) command.getArgs()[1]).setValue("");
+        } else {
+            ((FlatArg) command.getArgs()[0]).setValue("");
+        }
 
         ServerAnswer<String> answer = CommandController.newCommand(command, App.getLogin(), App.getPassword());
         MessageStage.startMessageStage(answer.getAnswer());
+        Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+        stage.close();
     }
 }

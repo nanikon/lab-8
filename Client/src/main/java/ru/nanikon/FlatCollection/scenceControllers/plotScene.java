@@ -16,7 +16,10 @@ import javafx.scene.transform.Transform;
 import javafx.stage.Stage;
 import ru.nanikon.FlatCollection.App;
 import ru.nanikon.FlatCollection.CommandController;
+import ru.nanikon.FlatCollection.commands.Command;
+import ru.nanikon.FlatCollection.commands.ServerAnswer;
 import ru.nanikon.FlatCollection.data.Flat;
+import ru.nanikon.FlatCollection.stages.*;
 
 import java.io.IOException;
 import java.util.*;
@@ -63,6 +66,7 @@ public class plotScene {
             try {
                 LinkedList<Flat> collection = CommandController.updateCollection();
                 currentCollection = collection;
+                App.setCollection(collection);
             } catch (IllegalStateException ignored) {
 
             }
@@ -84,7 +88,7 @@ public class plotScene {
         initLabels();
         gc = canvas.getGraphicsContext2D();
         LinkedList<Flat> collection = CommandController.updateCollection();
-        currentCollection = collection;
+        currentCollection = App.getCollection();
 
         redrawPlot();
         canvas.widthProperty().addListener(observable -> {
@@ -99,7 +103,7 @@ public class plotScene {
             double y = event.getY();
             try {
                 Flat element = findFlat(x, y);
-                //LabInfoStage.startLabInfoStage(element); TODO на свое инфо переписать
+                HelpStage.showFlat(element);
             } catch (NoSuchElementException ignored) {
             }
         });
@@ -116,12 +120,12 @@ public class plotScene {
         removeByIdButton.setText(App.getRB().getString("remove_by_id"));
         removeAnyByTransportButton.setText(App.getRB().getString("remove_any_by_transport"));
         clearButton.setText(App.getRB().getString("clear"));
-        filterButton.setText(App.getRB().getString("filter"));
+        //filterButton.setText(App.getRB().getString("filter"));
         averageButton.setText(App.getRB().getString("average"));
         infoButton.setText(App.getRB().getString("info"));
         historyButton.setText(App.getRB().getString("history"));
         helpButton.setText(App.getRB().getString("help"));
-        executeScriptButton.setText(App.getRB().getString("execute_script"));
+        //executeScriptButton.setText(App.getRB().getString("execute_script"));
         asWhoLabel.setText(App.getRB().getString("as_who"));
         currentLoginLabel.setText(App.getLogin());
     }
@@ -293,12 +297,84 @@ public class plotScene {
 
     public void changeView(ActionEvent event) {
         timer.cancel();
-        CommandController.stopConnection();
+        //CommandController.stopConnection();
         try {
             Thread.sleep(1000);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
         App.getTableScene((Stage) ((Node) event.getSource()).getScene().getWindow());
+    }
+
+    public void exitClick(ActionEvent actionEvent) {
+        ExitStage.tryToExit();
+    }
+
+    public void logOut(ActionEvent event) {
+        Command command = CommandController.commandMap.get("log_out");
+        ServerAnswer<String> answer = CommandController.newCommand(command, App.getLogin(), App.getPassword());
+        App.setPassword("");
+        App.setLogin("");
+        try {
+            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+            stage.setScene(new Scene(App.getSceneParentByUrl("/fxmls/startScene.fxml")));
+            MessageStage.startMessageStage(answer.getAnswer());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void clearCollection(ActionEvent event) {
+        Command command = CommandController.commandMap.get("clear");
+        ServerAnswer<String> answer = CommandController.newCommand(command, App.getLogin(), App.getPassword());
+        MessageStage.startMessageStage(answer.getAnswer());
+    }
+
+    public void averageRooms(ActionEvent event) {
+        Command command = CommandController.commandMap.get("average_of_number_of_rooms");
+        ServerAnswer<Integer> answer = CommandController.newCommand(command, App.getLogin(), App.getPassword());
+        if (answer.isStatus()) {
+            AverageStage.startShow(answer.getAnswer());
+        } else {
+            MessageStage.startMessageStage(answer.getErrorMessage());
+        }
+    }
+
+    public void infoCollection(ActionEvent event) {
+        Command command = CommandController.commandMap.get("info");
+        ServerAnswer<List<String>> answer = CommandController.newCommand(command, App.getLogin(), App.getPassword());
+        if (answer.isStatus()) {
+            InfoStage.startShow(answer.getAnswer());
+        } else {
+            MessageStage.startMessageStage(answer.getErrorMessage());
+        }
+    }
+
+    public void helpCommands(ActionEvent event) {
+        Command command = CommandController.commandMap.get("help");
+        ServerAnswer<HashMap<String, String>> answer = CommandController.newCommand(command, App.getLogin(), App.getPassword());
+        HelpStage.showHelp(answer.getAnswer());
+    }
+
+    public void getHistory(ActionEvent actionEvent) {
+        Command command = CommandController.commandMap.get("history");
+        ServerAnswer<String> answer = CommandController.newCommand(command, App.getLogin(), App.getPassword());
+        HistoryStage.showHistory(answer.getAnswer());
+    }
+
+    public void addElement(ActionEvent event) {
+        AddStage.startAdd();
+    }
+
+    public void removeByIdStart(ActionEvent actionEvent) {
+        IdStage.startRemove();
+    }
+
+    public void updateElement(ActionEvent event) {
+        IdStage.startUpdate();
+    }
+
+    public void removeByTransportStart(ActionEvent actionEvent) {
+        TransportStage.startDelete();
     }
 }

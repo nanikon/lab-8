@@ -19,7 +19,7 @@ public class App {
             System.out.println("Драйвер не найден!");
             System.exit(-1);
         }
-        try (Scanner scr = new Scanner(new FileReader("config"))) {
+        try (Scanner scr = new Scanner(new FileReader(args[0]))) {
             String url = scr.nextLine().trim();
             String login = scr.nextLine().trim();
             String password = scr.nextLine().trim();

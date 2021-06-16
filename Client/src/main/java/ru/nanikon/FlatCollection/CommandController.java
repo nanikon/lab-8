@@ -30,21 +30,24 @@ public class CommandController {
     public static synchronized ServerAnswer newCommand(Command command, String login, String password) {
         try {
             connection.stopConnection();
-            Thread.sleep(500);
-            if (tryToConnect(App.host, App.port)) {
-                command.setLogin(login);
-                command.setPassword(password);
-                connection.sendCommand(command);
-                Thread.sleep(500);
-                ServerAnswer result = connection.receive();
-                if (!command.getName().equals("show") & !command.getName().equals("send map")) {
-                    ((HistoryCommand) commandMap.get("history")).putCommand(command.getName());
+            connection = new Connection();
+            int i = 0;
+            while (!tryToConnect(App.host, App.port)) {
+                i++;
+                if (i == 5) {
+                    throw new IOException();
                 }
-                connection.stopConnection();
-                return result;
-            } else {
-                throw new IOException();
             }
+            command.setLogin(login);
+            command.setPassword(password);
+            connection.sendCommand(command);
+            Thread.sleep(2000);
+            ServerAnswer result = connection.receive();
+            if (!command.getName().equals("show") & !command.getName().equals("send map")) {
+                ((HistoryCommand) commandMap.get("history")).putCommand(command.getName());
+            }
+            connection.stopConnection();
+            return result;
         } catch (IOException e) {
             System.out.println("Не можем подключиться к серверу. Завершение работы");
             System.exit(0);

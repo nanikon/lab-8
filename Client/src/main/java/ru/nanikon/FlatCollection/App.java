@@ -9,12 +9,14 @@ import javafx.stage.Stage;
 import ru.nanikon.FlatCollection.commands.Command;
 import ru.nanikon.FlatCollection.commands.MapCommand;
 import ru.nanikon.FlatCollection.commands.ServerAnswer;
+import ru.nanikon.FlatCollection.data.Flat;
 import ru.nanikon.FlatCollection.scenceControllers.plotScene;
 import ru.nanikon.FlatCollection.utils.Connection;
 
 import java.io.IOException;
 import java.net.URL;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
@@ -28,9 +30,10 @@ public class App extends Application {
 
     private static String login;
     private static String password;
+    private static LinkedList<Flat> collection;
 
     public static void main(String[] args) {
-        /*try {
+        try {
             host = args[0];
             port = Integer.parseInt(args[1]);
         } catch (NumberFormatException e) {
@@ -39,9 +42,9 @@ public class App extends Application {
         } catch (IndexOutOfBoundsException e) {
             System.out.println("Ошибка! Вы не ввели все аргументы: хост и порт");
             System.exit(0);
-        }*/
-        host = "localhost";
-        port = 8235;
+        }
+        //host = "localhost";
+        //port = 8235;
         launch();
     }
     /**
@@ -124,7 +127,7 @@ public class App extends Application {
             stage.setScene(new Scene(loader.load()));
             stage.setOnCloseRequest(e -> {
                 Platform.exit();
-                System.exit(0);  //todo: think about such killing termination
+                System.exit(0);
             });
             plotScene controller = loader.getController();
             controller.canvas.widthProperty().bind(controller.pane.widthProperty());
@@ -148,4 +151,8 @@ public class App extends Application {
             e.printStackTrace();
         }
     }
+
+    public static LinkedList<Flat> getCollection() {return collection;}
+
+    public static void setCollection(LinkedList<Flat> collection) { App.collection = collection;}
 }

@@ -31,7 +31,7 @@ public class AddCommand implements Command, Serializable {
         ServerAnswer<String> result = new ServerAnswer<>();
         if (!manager.chekUser(login, password)) {
             result.setStatus(false);
-            result.setMessage("Ой, вы там в приложении что-то напортачили и мы то ли логин не найдем, то ли пароль для него не тот. Перезайдите нормально!");
+            result.setMessage("login_password_wrong");
         } else {
             FlatBuilder builder = ((FlatArg) params[0]).getBuilder();
             result = manager.addFlat(builder.getResult(), login);

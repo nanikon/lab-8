@@ -124,7 +124,7 @@ public class Connection {
         }
     }
 
-    public synchronized ServerAnswer receive() throws IOException {
+    public ServerAnswer receive() throws IOException {
         while (true) {
             selector.select();
             Set<SelectionKey> selectedKeys = selector.selectedKeys();

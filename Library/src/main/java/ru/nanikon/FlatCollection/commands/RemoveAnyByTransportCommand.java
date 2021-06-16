@@ -26,13 +26,14 @@ public class RemoveAnyByTransportCommand implements Command, Serializable {
      */
     @Override
     public ServerAnswer<String> execute(DBManager manager) {
-        ServerAnswer<String> result = new ServerAnswer<>(); //TODO переделать
+        ServerAnswer<String> result = new ServerAnswer<>();
         if (!manager.chekUser(login, password)) {
             result.setStatus(false);
-            result.setMessage("Ой, вы там в приложении что-то напортачили и мы то ли логин не найдем, то ли пароль для него не тот. Перезайдите нормально!");
+            result.setMessage("login_password_wrong");
+        } else {
+            Transport transport = ((TransportArg) params[0]).getValue();
+            result = manager.deleteByTransport(transport.name(), login);
         }
-        Transport transport = ((TransportArg) params[0]).getValue();
-        result.setAnswer(manager.deleteByTransport(transport.name(), login));
         return result;
     }
 

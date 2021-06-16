@@ -36,7 +36,7 @@ public class SendingTask implements Runnable {
             sender.sendAnswer(answer);
             Server.logger.info("Отправлен ответ команды");
         } catch (IOException e) {
-            Server.logger.warn("Проблемы со связью");
+            Server.logger.warn("Проблемы со связью", e);
         }
     }
 }
