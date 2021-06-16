@@ -32,10 +32,10 @@ public class AddCommand implements Command, Serializable {
         if (!manager.chekUser(login, password)) {
             result.setStatus(false);
             result.setMessage("Ой, вы там в приложении что-то напортачили и мы то ли логин не найдем, то ли пароль для него не тот. Перезайдите нормально!");
+        } else {
+            FlatBuilder builder = ((FlatArg) params[0]).getBuilder();
+            result = manager.addFlat(builder.getResult(), login);
         }
-        FlatBuilder builder = ((FlatArg) params[0]).getBuilder();
-        result.setStatus(true); //TODO: исправить, ведь ошибки и из менеджера могут выползти
-        result.setMessage(manager.addFlat(builder.getResult(), login));
         return result;
     }
 

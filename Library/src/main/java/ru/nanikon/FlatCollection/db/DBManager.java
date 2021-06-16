@@ -164,11 +164,12 @@ public class DBManager {
         }
     }
 
-    public String addFlat(Flat flat, String login) {
+    public ServerAnswer<String> addFlat(Flat flat, String login) {
         int house_id;
         int view_id;
         int transport_id;
         int user_id;
+        ServerAnswer<String> result = new ServerAnswer<>();
         Lock wlock = lock.writeLock();
         wlock.lock();
         try {
@@ -211,19 +212,23 @@ public class DBManager {
             flatStatement.executeUpdate();
             connection.commit();
             initialCollection();
+            result.setStatus(true);
             //return "Элемент {" + flat.toLongString() + "} успешно добавлен в коллекцию";
-            return "Элемент успешно добавлен в коллекцию";
+            result.setAnswer("add_success");
         } catch (SQLException e) {
             //e.printStackTrace();
             try {
                 connection.rollback();
             } catch (SQLException ignored) {}
-            return "При добавлении объекта произошла ошибка";
+            result.setStatus(false);
+            result.setAnswer("add_wrong");
         } catch (Exception e) {
-            return "Не удалось добавить объект, так как кто-то сломал БД";
+            result.setStatus(false);
+            result.setAnswer("add_wrong");
         } finally {
             wlock.unlock();
         }
+        return result;
     }
 
     public void addHouse(House house) throws SQLException {

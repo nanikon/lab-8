@@ -202,4 +202,8 @@ public class tableScene {
         ServerAnswer<String> answer = CommandController.newCommand(command, App.getLogin(), App.getPassword());
         HistoryStage.showHistory(answer.getAnswer());
     }
+
+    public void addElement(ActionEvent event) {
+        AddStage.startAdd();
+    }
 }

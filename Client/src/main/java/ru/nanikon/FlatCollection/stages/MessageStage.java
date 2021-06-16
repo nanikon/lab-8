@@ -28,4 +28,22 @@ public class MessageStage {
             e.printStackTrace();
         }
     }
+
+    public static void startErrorMessageStage(String message) {
+        try {
+            Stage stage = new Stage();
+            FXMLLoader loader = new FXMLLoader();
+            URL xmlUrl = App.class.getResource("/fxmls/messageScene.fxml");
+            loader.setLocation(xmlUrl);
+            stage.setScene(new Scene(loader.load()));
+
+            MessageSceneController controller = loader.getController();
+            controller.errorLabel.setText(message);
+            controller.okButton.setText(App.getRB().getString("continueOK"));
+            stage.initModality(Modality.APPLICATION_MODAL);
+            stage.showAndWait();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 }

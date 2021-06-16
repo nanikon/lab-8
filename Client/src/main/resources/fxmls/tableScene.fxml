@@ -51,7 +51,7 @@
    <left>
       <VBox alignment="TOP_CENTER" spacing="10.0" BorderPane.alignment="CENTER">
          <children>
-            <Button fx:id="addButton" mnemonicParsing="false" text="add" />
+            <Button fx:id="addButton" mnemonicParsing="false" text="add" onAction="#addElement"/>
             <Button fx:id="updateButton" mnemonicParsing="false" text="update" />
             <Button fx:id="removeByIdButton" contentDisplay="CENTER" mnemonicParsing="false" text="remove by id" textAlignment="CENTER" wrapText="true" />
             <Button fx:id="removeAnyByTransportButton" contentDisplay="CENTER" mnemonicParsing="false" text="remove any by transport" textAlignment="CENTER" wrapText="true" />
