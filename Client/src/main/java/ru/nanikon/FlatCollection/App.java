@@ -1,6 +1,7 @@
 package ru.nanikon.FlatCollection;
 
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -8,6 +9,7 @@ import javafx.stage.Stage;
 import ru.nanikon.FlatCollection.commands.Command;
 import ru.nanikon.FlatCollection.commands.MapCommand;
 import ru.nanikon.FlatCollection.commands.ServerAnswer;
+import ru.nanikon.FlatCollection.scenceControllers.plotScene;
 import ru.nanikon.FlatCollection.utils.Connection;
 
 import java.io.IOException;
@@ -113,4 +115,37 @@ public class App extends Application {
 
     public static String getLogin() {return login;}
     public static String getPassword() {return password;}
+
+    public static void getPlotScene(Stage stage) {
+        try {
+            FXMLLoader loader = new FXMLLoader();
+            URL xmlUrl = App.class.getResource("/fxmls/plotScene.fxml");
+            loader.setLocation(xmlUrl);
+            stage.setScene(new Scene(loader.load()));
+            stage.setOnCloseRequest(e -> {
+                Platform.exit();
+                System.exit(0);  //todo: think about such killing termination
+            });
+            plotScene controller = loader.getController();
+            controller.canvas.widthProperty().bind(controller.pane.widthProperty());
+            controller.canvas.heightProperty().bind(controller.pane.heightProperty());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void getTableScene(Stage stage) {
+        try {
+            FXMLLoader loader = new FXMLLoader();
+            URL xmlUrl = App.class.getResource("/fxmls/tableScene.fxml");
+            loader.setLocation(xmlUrl);
+            stage.setScene(new Scene(loader.load()));
+            stage.setOnCloseRequest(e -> {
+                Platform.exit();
+                System.exit(0);
+            });
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 }

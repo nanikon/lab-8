@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.canvas.Canvas?>
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ru.nanikon.FlatCollection.scenceControllers.plotScene">
+    <center>
+        <StackPane fx:id="pane">
+            <Canvas fx:id="canvas" height="550" width="700"/>
+        </StackPane>
+    </center>
+    <bottom>
+        <HBox alignment="CENTER_RIGHT" BorderPane.alignment="CENTER">
+            <padding>
+                <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+            </padding>
+            <children>
+                <Button fx:id="changeViewButton" mnemonicParsing="false" text="change view" onAction="#changeView"/>
+            </children>
+        </HBox>
+    </bottom>
+    <top>
+        <HBox alignment="BOTTOM_LEFT" spacing="20.0" BorderPane.alignment="CENTER">
+            <children>
+                <Button fx:id="logOutButton" mnemonicParsing="false" text="log out" />
+                <Button fx:id="exitButton" mnemonicParsing="false" text="exit" />
+            </children>
+            <padding>
+                <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+            </padding>
+        </HBox>
+    </top>
+    <left>
+        <VBox alignment="TOP_CENTER" spacing="10.0" BorderPane.alignment="CENTER">
+            <children>
+                <Button fx:id="addButton" mnemonicParsing="false" text="add" />
+                <Button fx:id="updateButton" mnemonicParsing="false" text="update" />
+                <Button fx:id="removeByIdButton" contentDisplay="CENTER" mnemonicParsing="false" text="remove by id" textAlignment="CENTER" wrapText="true" />
+                <Button fx:id="removeAnyByTransportButton" contentDisplay="CENTER" mnemonicParsing="false" text="remove any by transport" textAlignment="CENTER" wrapText="true" />
+                <Button fx:id="clearButton" mnemonicParsing="false" text="clear" />
+            </children>
+            <padding>
+                <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+            </padding>
+        </VBox>
+    </left>
+    <right>
+        <VBox alignment="TOP_CENTER" spacing="10.0" BorderPane.alignment="CENTER">
+            <children>
+                <Button fx:id="filterButton" mnemonicParsing="false" text="filter" />
+                <Button fx:id="averageButton" mnemonicParsing="false" text="average" />
+                <Button fx:id="infoButton" mnemonicParsing="false" text="info" />
+                <Button fx:id="historyButton" mnemonicParsing="false" text="history" />
+                <Button fx:id="helpButton" mnemonicParsing="false" text="help" />
+                <Button fx:id="executeScriptButton" alignment="CENTER" mnemonicParsing="false" text="execute script" textAlignment="CENTER" wrapText="true" />
+            </children>
+            <padding>
+                <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+            </padding>
+        </VBox>
+    </right>
+</BorderPane>

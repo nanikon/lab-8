@@ -52,7 +52,8 @@ public class Text_ru_RU extends ListResourceBundle {
             {"houseName", "Имя дома"},
             {"year", "Год основания дома"},
             {"numberOfFloors", "Количество этажей"},
-            {"owner", "Владелец"}
+            {"owner", "Владелец"},
+            {"flat", "Квартира"}
 
     };
 }

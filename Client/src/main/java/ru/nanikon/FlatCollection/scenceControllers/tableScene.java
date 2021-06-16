@@ -1,18 +1,26 @@
 package ru.nanikon.FlatCollection.scenceControllers;
 
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.stage.Stage;
 import ru.nanikon.FlatCollection.App;
 import ru.nanikon.FlatCollection.CommandController;
 import ru.nanikon.FlatCollection.data.Flat;
 import ru.nanikon.FlatCollection.data.Transport;
 import ru.nanikon.FlatCollection.data.View;
 
+import java.io.IOException;
+import java.net.URL;
 import java.time.ZonedDateTime;
 import java.util.Date;
 import java.util.LinkedList;
@@ -39,9 +47,11 @@ public class tableScene {
     private final TimerTask task = new TimerTask(){
         public void run()
         {
-            LinkedList<Flat> collection = CommandController.updateCollection();
-            ObservableList<Flat> list = FXCollections.observableList(collection);
-            showTable.setItems(list);
+            try {
+                LinkedList<Flat> collection = CommandController.updateCollection();
+                ObservableList<Flat> list = FXCollections.observableList(collection);
+                showTable.setItems(list);
+            } catch (IllegalStateException ignored) {}
         }
 
     };
@@ -118,5 +128,16 @@ public class tableScene {
 
     private void timerUpdateMethod(){
         timer.scheduleAtFixedRate(task, new Date(), 1000L);
+    }
+
+    public void changeView(ActionEvent event) {
+        stopTimer();
+        CommandController.stopConnection();
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        App.getPlotScene((Stage) ((Node) event.getSource()).getScene().getWindow());
     }
 }

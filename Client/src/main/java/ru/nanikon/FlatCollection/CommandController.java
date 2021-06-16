@@ -22,6 +22,10 @@ public class CommandController {
         }
     }
 
+    public static void stopConnection() {
+        connection.stopConnection();
+    }
+
     public static ServerAnswer newCommand(Command command, String login, String password) {
         try {
             if (tryToConnect(App.host, App.port)) {
