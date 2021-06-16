@@ -27,6 +27,8 @@
     <top>
         <HBox alignment="BOTTOM_LEFT" spacing="20.0" BorderPane.alignment="CENTER">
             <children>
+                <Label fx:id="asWhoLabel" />
+                <Label fx:id="currentLoginLabel" />
                 <Button fx:id="logOutButton" mnemonicParsing="false" text="log out" />
                 <Button fx:id="exitButton" mnemonicParsing="false" text="exit" />
             </children>

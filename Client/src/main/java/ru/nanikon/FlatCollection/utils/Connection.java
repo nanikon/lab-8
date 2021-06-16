@@ -124,7 +124,7 @@ public class Connection {
         }
     }
 
-    public ServerAnswer receive() throws IOException {
+    public synchronized ServerAnswer receive() throws IOException {
         while (true) {
             selector.select();
             Set<SelectionKey> selectedKeys = selector.selectedKeys();
@@ -161,7 +161,7 @@ public class Connection {
     public void stopConnection() {
         try {
             serverSocketChannel.close();
-        } catch (IOException ignored) {
+        } catch (IOException | NullPointerException ignored) {
         }
     }
 }

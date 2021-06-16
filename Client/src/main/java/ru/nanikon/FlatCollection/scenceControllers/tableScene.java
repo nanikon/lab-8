@@ -9,23 +9,25 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 import ru.nanikon.FlatCollection.App;
 import ru.nanikon.FlatCollection.CommandController;
+import ru.nanikon.FlatCollection.commands.Command;
+import ru.nanikon.FlatCollection.commands.HistoryCommand;
+import ru.nanikon.FlatCollection.commands.ServerAnswer;
 import ru.nanikon.FlatCollection.data.Flat;
 import ru.nanikon.FlatCollection.data.Transport;
 import ru.nanikon.FlatCollection.data.View;
+import ru.nanikon.FlatCollection.stages.*;
 
 import java.io.IOException;
 import java.net.URL;
 import java.time.ZonedDateTime;
-import java.util.Date;
-import java.util.LinkedList;
-import java.util.Timer;
-import java.util.TimerTask;
+import java.util.*;
 
 public class tableScene {
     public TableView<Flat> showTable;
@@ -55,6 +57,8 @@ public class tableScene {
         }
 
     };
+    public Label asWhoLabel;
+    public Label currentLoginLabel;
     @FXML private TableColumn<Flat, Integer> id;
     @FXML private TableColumn<Flat, String> name;
     @FXML private TableColumn<Flat, Double> x;
@@ -105,6 +109,8 @@ public class tableScene {
         historyButton.setText(App.getRB().getString("history"));
         helpButton.setText(App.getRB().getString("help"));
         executeScriptButton.setText(App.getRB().getString("execute_script"));
+        asWhoLabel.setText(App.getRB().getString("as_who"));
+        currentLoginLabel.setText(App.getLogin());
 
         id.setText(App.getRB().getString("id"));
         name.setText(App.getRB().getString("name"));
@@ -139,5 +145,61 @@ public class tableScene {
             e.printStackTrace();
         }
         App.getPlotScene((Stage) ((Node) event.getSource()).getScene().getWindow());
+    }
+
+    public void exitClick(ActionEvent actionEvent) {
+        ExitStage.tryToExit();
+    }
+
+    public void logOut(ActionEvent event) {
+        Command command = CommandController.commandMap.get("log_out");
+        ServerAnswer<String> answer = CommandController.newCommand(command, App.getLogin(), App.getPassword());
+        App.setPassword("");
+        App.setLogin("");
+        try {
+            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+            stage.setScene(new Scene(App.getSceneParentByUrl("/fxmls/startScene.fxml")));
+            MessageStage.startMessageStage(answer.getAnswer());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void clearCollection(ActionEvent event) {
+        Command command = CommandController.commandMap.get("clear");
+        ServerAnswer<String> answer = CommandController.newCommand(command, App.getLogin(), App.getPassword());
+        MessageStage.startMessageStage(answer.getAnswer());
+    }
+
+    public void averageRooms(ActionEvent event) {
+        Command command = CommandController.commandMap.get("average_of_number_of_rooms");
+        ServerAnswer<Integer> answer = CommandController.newCommand(command, App.getLogin(), App.getPassword());
+        if (answer.isStatus()) {
+            AverageStage.startShow(answer.getAnswer());
+        } else {
+            MessageStage.startMessageStage(answer.getErrorMessage());
+        }
+    }
+
+    public void infoCollection(ActionEvent event) {
+        Command command = CommandController.commandMap.get("info");
+        ServerAnswer<List<String>> answer = CommandController.newCommand(command, App.getLogin(), App.getPassword());
+        if (answer.isStatus()) {
+            InfoStage.startShow(answer.getAnswer());
+        } else {
+            MessageStage.startMessageStage(answer.getErrorMessage());
+        }
+    }
+
+    public void helpCommands(ActionEvent event) {
+        Command command = CommandController.commandMap.get("help");
+        ServerAnswer<HashMap<String, String>> answer = CommandController.newCommand(command, App.getLogin(), App.getPassword());
+        HelpStage.showHelp(answer.getAnswer());
+    }
+
+    public void getHistory(ActionEvent actionEvent) {
+        Command command = CommandController.commandMap.get("history");
+        ServerAnswer<String> answer = CommandController.newCommand(command, App.getLogin(), App.getPassword());
+        HistoryStage.showHistory(answer.getAnswer());
     }
 }

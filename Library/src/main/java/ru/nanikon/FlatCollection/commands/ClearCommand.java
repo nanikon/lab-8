@@ -10,7 +10,7 @@ import java.io.Serializable;
  */
 public class ClearCommand implements Command, Serializable {
     private AbstractArgument<?>[] params = {};
-    private String information = "'clear' - очистить коллекцию";
+    private String information = "clear_help";
     private String login;
     private String password;
 
@@ -21,12 +21,13 @@ public class ClearCommand implements Command, Serializable {
 
     @Override
     public ServerAnswer<String> execute(DBManager manager) {
-        ServerAnswer<String> result = new ServerAnswer<>(); //TODO: переделать
+        ServerAnswer<String> result = new ServerAnswer<>();
         if (!manager.chekUser(login, password)) {
             result.setStatus(false);
-            result.setMessage("Ой, вы там в приложении что-то напортачили и мы то ли логин не найдем, то ли пароль для него не тот. Перезайдите нормально!");
+            result.setAnswer("login_password_wrong");
+        } else {
+            result = manager.clear(login);
         }
-        result.setAnswer(manager.clear(login));
         return result;
     }
 

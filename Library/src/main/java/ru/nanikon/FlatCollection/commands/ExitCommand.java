@@ -12,7 +12,7 @@ import java.io.Serializable;
  */
 public class ExitCommand implements Command, Serializable {
     private AbstractArgument<?>[] params = {};
-    private String information = "'exit' - завершить программу";
+    private String information = "exit_help";
     private String login;
     private String password;
 

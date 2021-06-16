@@ -14,7 +14,7 @@ import java.util.HashSet;
 
 public class UpdateCommand implements Command, Serializable {
     private AbstractArgument<?>[] params = {new IntArg(), new FlatArg()};
-    private String information = "'update id {element}' - обновить значение элемента коллекции, id которого равен заданному";
+    private String information = "update_help";
 
     private String login;
     private String password;

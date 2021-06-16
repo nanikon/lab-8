@@ -7,6 +7,7 @@ import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
@@ -22,6 +23,8 @@ import java.util.*;
 
 public class plotScene {
     public StackPane pane;
+    public Label asWhoLabel;
+    public Label currentLoginLabel;
     private GraphicsContext gc;
     public Canvas canvas;
     public Button changeViewButton;
@@ -119,6 +122,8 @@ public class plotScene {
         historyButton.setText(App.getRB().getString("history"));
         helpButton.setText(App.getRB().getString("help"));
         executeScriptButton.setText(App.getRB().getString("execute_script"));
+        asWhoLabel.setText(App.getRB().getString("as_who"));
+        currentLoginLabel.setText(App.getLogin());
     }
 
     private double geXScale() {

@@ -17,7 +17,7 @@ import java.util.LinkedList;
 public class ShowCommand implements Command, Serializable {
     //private CollectionManager collection;
     private AbstractArgument<?>[] params = {};
-    private String information = "'show' - вывести в стандартный поток вывода все элементы коллекции в строковом представлении";
+    private String information = "show_help";
     private HashMap<String, AbstractArgument<?>> args;
     private String login;
     private String password;

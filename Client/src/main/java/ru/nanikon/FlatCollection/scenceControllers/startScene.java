@@ -9,6 +9,7 @@ import javafx.scene.control.ChoiceBox;
 import javafx.stage.Stage;
 import ru.nanikon.FlatCollection.App;
 import ru.nanikon.FlatCollection.Language;
+import ru.nanikon.FlatCollection.stages.ExitStage;
 
 import java.io.IOException;
 
@@ -70,6 +71,6 @@ public class startScene {
     }
 
     public void exit(ActionEvent actionEvent) {
-        System.exit(0);
+        ExitStage.tryToExit();
     }
 }

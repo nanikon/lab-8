@@ -10,8 +10,8 @@ import ru.nanikon.FlatCollection.scenceControllers.MessageSceneController;
 import java.io.IOException;
 import java.net.URL;
 
-public class MessageStage {
-    public static void startMessageStage(String message) {
+public class AverageStage {
+    public static void startShow(int average) {
         try {
             Stage stage = new Stage();
             FXMLLoader loader = new FXMLLoader();
@@ -20,8 +20,7 @@ public class MessageStage {
             stage.setScene(new Scene(loader.load()));
 
             MessageSceneController controller = loader.getController();
-            controller.errorLabel.setText(App.getRB().getString(message));
-            controller.okButton.setText(App.getRB().getString("continueOK"));
+            controller.errorLabel.setText(App.getRB().getString("average") + ": " + average);
             stage.initModality(Modality.APPLICATION_MODAL);
             stage.showAndWait();
         } catch (IOException e) {

@@ -11,7 +11,7 @@ import java.io.Serializable;
  */
 public class AverageOfNumberOfRoomsCommand implements Command, Serializable {
     private AbstractArgument<?>[] params = {};
-    private String information = "'average_of_number_of_rooms' - вывести среднее значение поля numberOfRooms для всех элементов коллекции";
+    private String information = "average_help";
     private String login;
     private String password;
 
@@ -28,9 +28,12 @@ public class AverageOfNumberOfRoomsCommand implements Command, Serializable {
     public ServerAnswer<Integer> execute(DBManager manager) {
         ServerAnswer<Integer> result = new ServerAnswer<>(); //TODO: переделать
         if (!manager.chekUser(login, password)) {
+            result.setStatus(false);
             result.setMessage("Ой, вы там в приложении что-то напортачили и мы то ли логин не найдем, то ли пароль для него не тот. Перезайдите нормально!");
+        } else {
+            result.setStatus(true);
+            result.setAnswer(manager.getAverageNumberOfRooms());
         }
-        result.setAnswer(manager.getAverageNumberOfRooms());
         return result;
     }
 

@@ -12,7 +12,7 @@ import java.io.Serializable;
  */
 public class RemoveAnyByTransportCommand implements Command, Serializable {
     private AbstractArgument<?>[] params = {new TransportArg()};
-    private String information = "'remove_any_by_transport transport' - удалить из коллекции один элемент, значение поля transport которого эквивалентно заданному";
+    private String information = "remove_transport_help";
     private String login;
     private String password;
 

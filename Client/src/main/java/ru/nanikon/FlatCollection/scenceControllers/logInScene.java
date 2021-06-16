@@ -49,21 +49,16 @@ public class logInScene {
     }
 
     public void goToTable(ActionEvent event) {
-        try {
-            String login = loginField.getText();
-            String password = passwordField.getText();
-            Command command = CommandController.commandMap.get("log_in");
-            ServerAnswer<String> answer = CommandController.newCommand(command, login, password);
-            if (answer.isStatus()) {
-                App.setLogin(login);
-                App.setPassword(password);
-                Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-                stage.setScene(new Scene(App.getSceneParentByUrl("/fxmls/tableScene.fxml")));
-            } else {
-                MessageStage.startMessageStage(answer.getErrorMessage());
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
+        String login = loginField.getText();
+        String password = passwordField.getText();
+        Command command = CommandController.commandMap.get("log_in");
+        ServerAnswer<String> answer = CommandController.newCommand(command, login, password);
+        if (answer.isStatus()) {
+            App.setLogin(login);
+            App.setPassword(password);
+            App.getTableScene((Stage) ((Node) event.getSource()).getScene().getWindow());
+        } else {
+            MessageStage.startMessageStage(answer.getErrorMessage());
         }
     }
 }

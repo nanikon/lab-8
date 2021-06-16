@@ -7,15 +7,16 @@ import java.io.Serializable;
 
 public class LogOutCommand implements Command, Serializable {
     private AbstractArgument<?>[] params = {};
-    private String information = "'log_out' - выйти из системы, но незавершать работу приложения";
+    private String information = "logout_help";
     private String login;
     private String password;
 
     private static final long serialVersionUID = 60;
     @Override
     public ServerAnswer<String> execute(DBManager manager) {
-        ServerAnswer<String> result = new ServerAnswer<>(); //TODO переделать
-        result.setAnswer("Вы успешно вышли из (окна) системы");
+        ServerAnswer<String> result = new ServerAnswer<>();
+        result.setStatus(true);
+        result.setAnswer("log_out_message");
         return result;
     }
 

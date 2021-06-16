@@ -10,7 +10,7 @@ import java.io.Serializable;
  */
 public class SortCommand implements Command, Serializable {
     private AbstractArgument<?>[] params = {};
-    private String information = "'sort' - отсортировать коллекцию в естественном порядке";
+    private String information = "sort_help";
     private String login;
     private String password;
 

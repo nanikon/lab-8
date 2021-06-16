@@ -6,13 +6,16 @@ import ru.nanikon.FlatCollection.db.DBManager;
 
 import java.io.IOException;
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 /**
  * output information about the collection (type, initialization date, number of elements) to the standard output stream.)
  */
 public class InfoCommand implements Command, Serializable {
     private AbstractArgument<?>[] params = {};
-    private String information = "'info' - вывести в стандартный поток вывода информацию о коллекции (тип, дата инициализации, количество элементов)";
+    private String information = "info_help";
     private String login;
     private String password;
 
@@ -23,17 +26,15 @@ public class InfoCommand implements Command, Serializable {
     }
 
     @Override
-    public ServerAnswer<String> execute(DBManager manager) {
-        ServerAnswer<String> result = new ServerAnswer<>(); //TODO: переделать
+    public ServerAnswer<List<String>> execute(DBManager manager) {
+        ServerAnswer<List<String>> result = new ServerAnswer<>();
         if (!manager.chekUser(login, password)) {
             result.setStatus(false);
             result.setMessage("Ой, вы там в приложении что-то напортачили и мы то ли логин не найдем, то ли пароль для него не тот. Перезайдите нормально!");
+        } else {
+            result.setStatus(true);
+            result.setAnswer(Arrays.asList(Flat.class.getName(), manager.getSize()));
         }
-        StringBuilder results = new StringBuilder();
-        results.append("Информация о коллекции: ").append("\n");
-        results.append("тип хранимых объектов: ").append(Flat.class.getName()).append("\n");
-        results.append("количество элементов: ").append(manager.getSize());
-        result.setAnswer(results.toString());
         return result;
     }
 

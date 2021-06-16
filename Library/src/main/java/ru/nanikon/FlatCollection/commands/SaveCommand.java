@@ -10,7 +10,7 @@ import java.io.Serializable;
  */
 public class SaveCommand implements Command, Serializable {
     private AbstractArgument<?>[] params = {};
-    private String information = "'save' - сохранить коллекцию в файл";
+    private String information = "save_help";
     private String login;
     private String password;
 

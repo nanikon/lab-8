@@ -11,7 +11,7 @@ import java.io.Serializable;
  */
 public class RemoveCommand implements Command, Serializable {
     private AbstractArgument<?>[] params = {new IntArg()};
-    private String information = "'remove_by_id id' - удалить элемент из коллекции по его id";
+    private String information = "remove_id_help";
     private String login;
     private String password;
 

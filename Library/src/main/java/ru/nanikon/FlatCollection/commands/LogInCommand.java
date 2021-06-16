@@ -8,7 +8,7 @@ import java.io.Serializable;
 
 public class LogInCommand implements Command, Serializable {
     private AbstractArgument<?>[] params = {};
-    private String information = "'log_in login password' - авторизироваться";
+    private String information = "login_help";
     private String login;
     private String password;
 

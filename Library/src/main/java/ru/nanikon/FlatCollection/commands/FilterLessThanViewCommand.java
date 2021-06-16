@@ -12,7 +12,7 @@ import java.io.Serializable;
  */
 public class FilterLessThanViewCommand implements Command, Serializable {
     private AbstractArgument<?>[] params = {new ViewArg()};
-    private String information = "'filter_less_than_view view' - вывести элементы, значение поля view которых меньше заданного";
+    private String information = "filter_help";
     private String login;
     private String password;
 

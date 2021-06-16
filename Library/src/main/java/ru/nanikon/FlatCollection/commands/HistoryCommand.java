@@ -13,7 +13,7 @@ import java.util.Deque;
 public class HistoryCommand implements Command, Serializable {
     Deque<String> history = new ArrayDeque<>();
     private AbstractArgument<?>[] params = {};
-    private String information = "'history' - вывести последние 8 команд (без их аргументов)";
+    private String information = "history_help";
     private String login;
     private String password;
 

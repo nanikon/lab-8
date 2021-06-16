@@ -62,7 +62,6 @@ public class DBManager {
                 result.setAnswer("register_problem");
             }
         } catch (SQLException e) {
-            //result = "Пользователь с логином " + login + " уже существует";
             try {
                 connection.rollback();
             } catch (SQLException ignored) {
@@ -393,16 +392,18 @@ public class DBManager {
         return toLongString();
     }
 
-    public String clear(String login) {
-        String result = "";
+    public ServerAnswer<String> clear(String login) {
+        ServerAnswer<String> result = new ServerAnswer<>();
         Lock wlock = lock.writeLock();
         wlock.lock();
         try (PreparedStatement results = connection.prepareStatement(Requests.CLEAR.QUERY)) {
             results.setString(1, login);
             if (results.executeUpdate() == 0) {
-                result = "Не удалось очистить коллекцию: у вас в ней нет ни одного элемента";
+                result.setStatus(false);
+                result.setAnswer("clear_null");
             } else {
-                result = "Коллекция успешно очищена (но лишь от ваших элементов)";
+                result.setStatus(true);
+                result.setAnswer("clear_success");
             }
             connection.commit();
             initialCollection();
@@ -410,9 +411,11 @@ public class DBManager {
             try {
                 connection.rollback();
             } catch (SQLException ignored) {}
-            result = "Не удалось очистить коллекцию";
+            result.setStatus(false);
+            result.setAnswer("clear_fail");
         } catch (Exception e) {
-            return "Там это, БД сломали, глянь посмотри: " + e.getMessage();
+            result.setStatus(false);
+            result.setAnswer("clear_fail");
         } finally {
             wlock.unlock();
         }

@@ -8,7 +8,7 @@ import java.io.Serializable;
 
 public class RegisterCommand implements Command, Serializable {
     private AbstractArgument<?>[] params = {};
-    private String information = "'register {login} {password} {password}' - зарегистрировать пользователя с введенным логином и паролем";
+    private String information = "register_help";
     private String login;
     private String password;
 

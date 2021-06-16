@@ -38,8 +38,10 @@
    <top>
       <HBox alignment="BOTTOM_LEFT" spacing="20.0" BorderPane.alignment="CENTER">
          <children>
-            <Button fx:id="logOutButton" mnemonicParsing="false" text="log out" />
-            <Button fx:id="exitButton" mnemonicParsing="false" text="exit" />
+             <Label fx:id="asWhoLabel" />
+             <Label fx:id="currentLoginLabel" />
+             <Button fx:id="logOutButton" mnemonicParsing="false" text="log out" onAction="#logOut"/>
+            <Button fx:id="exitButton" mnemonicParsing="false" text="exit" onAction="#exitClick"/>
          </children>
          <padding>
             <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
@@ -53,7 +55,7 @@
             <Button fx:id="updateButton" mnemonicParsing="false" text="update" />
             <Button fx:id="removeByIdButton" contentDisplay="CENTER" mnemonicParsing="false" text="remove by id" textAlignment="CENTER" wrapText="true" />
             <Button fx:id="removeAnyByTransportButton" contentDisplay="CENTER" mnemonicParsing="false" text="remove any by transport" textAlignment="CENTER" wrapText="true" />
-            <Button fx:id="clearButton" mnemonicParsing="false" text="clear" />
+            <Button fx:id="clearButton" mnemonicParsing="false" text="clear" onAction="#clearCollection"/>
          </children>
          <padding>
             <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
@@ -64,10 +66,10 @@
       <VBox alignment="TOP_CENTER" spacing="10.0" BorderPane.alignment="CENTER">
          <children>
             <Button fx:id="filterButton" mnemonicParsing="false" text="filter" />
-            <Button fx:id="averageButton" mnemonicParsing="false" text="average" />
-            <Button fx:id="infoButton" mnemonicParsing="false" text="info" />
-            <Button fx:id="historyButton" mnemonicParsing="false" text="history" />
-            <Button fx:id="helpButton" mnemonicParsing="false" text="help" />
+            <Button fx:id="averageButton" mnemonicParsing="false" text="average" onAction="#averageRooms"/>
+            <Button fx:id="infoButton" mnemonicParsing="false" text="info" onAction="#infoCollection"/>
+            <Button fx:id="historyButton" mnemonicParsing="false" text="history" onAction="#getHistory"/>
+            <Button fx:id="helpButton" mnemonicParsing="false" text="help" onAction="#helpCommands"/>
             <Button fx:id="executeScriptButton" alignment="CENTER" mnemonicParsing="false" text="execute script" textAlignment="CENTER" wrapText="true" />
          </children>
          <padding>

@@ -1,6 +1,7 @@
 package ru.nanikon.FlatCollection;
 
 import ru.nanikon.FlatCollection.commands.Command;
+import ru.nanikon.FlatCollection.commands.HistoryCommand;
 import ru.nanikon.FlatCollection.commands.ServerAnswer;
 import ru.nanikon.FlatCollection.data.Flat;
 import ru.nanikon.FlatCollection.utils.Connection;
@@ -26,14 +27,19 @@ public class CommandController {
         connection.stopConnection();
     }
 
-    public static ServerAnswer newCommand(Command command, String login, String password) {
+    public static synchronized ServerAnswer newCommand(Command command, String login, String password) {
         try {
+            connection.stopConnection();
+            Thread.sleep(500);
             if (tryToConnect(App.host, App.port)) {
                 command.setLogin(login);
                 command.setPassword(password);
                 connection.sendCommand(command);
                 Thread.sleep(500);
                 ServerAnswer result = connection.receive();
+                if (!command.getName().equals("show") & !command.getName().equals("send map")) {
+                    ((HistoryCommand) commandMap.get("history")).putCommand(command.getName());
+                }
                 connection.stopConnection();
                 return result;
             } else {

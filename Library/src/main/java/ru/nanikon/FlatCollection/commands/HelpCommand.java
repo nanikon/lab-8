@@ -12,7 +12,7 @@ import java.util.HashMap;
 public class HelpCommand implements Command, Serializable {
     private HashMap<String, Command> commands;
     private AbstractArgument<?>[] params = {};
-    private String information = "'help' - вывести справку по доступным командам";
+    private String information = "help_help";
     private HashMap<String, AbstractArgument<?>> args;
     private String login;
     private String password;
@@ -27,13 +27,15 @@ public class HelpCommand implements Command, Serializable {
      * running the command
      */
     @Override
-    public ServerAnswer execute(DBManager manager) {
-        StringBuilder result = new StringBuilder();
-        result.append("Справка по командам:").append("\n");
+    public ServerAnswer<HashMap<String, String>> execute(DBManager manager) {
+        HashMap<String, String> results = new HashMap<>();
         for (String nameCommand : commands.keySet()) {
-            result.append(commands.get(nameCommand).getInformation()).append("\n");
+            results.put(nameCommand, commands.get(nameCommand).getInformation());
         }
-        return new ServerAnswer();
+        ServerAnswer<HashMap<String, String>> result = new ServerAnswer<>();
+        result.setStatus(true);
+        result.setAnswer(results);
+        return result;
     }
 
     /**

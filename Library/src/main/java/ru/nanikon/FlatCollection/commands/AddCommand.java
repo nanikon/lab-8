@@ -15,7 +15,7 @@ import java.util.HashMap;
  */
 public class AddCommand implements Command, Serializable {
     private AbstractArgument<?>[] params = {new FlatArg()};
-    private String information = "'add {element}' - добавить новый элемент в коллекцию";
+    private String information = "add_help";
     private HashMap<String, AbstractArgument<?>> args;
 
     private String login;

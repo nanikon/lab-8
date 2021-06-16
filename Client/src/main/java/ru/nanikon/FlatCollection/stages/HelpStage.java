@@ -5,22 +5,26 @@ import javafx.scene.Scene;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import ru.nanikon.FlatCollection.App;
-import ru.nanikon.FlatCollection.scenceControllers.MessageSceneController;
+import ru.nanikon.FlatCollection.scenceControllers.helpScene;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.HashMap;
 
-public class MessageStage {
-    public static void startMessageStage(String message) {
+public class HelpStage {
+    public static void showHelp(HashMap<String, String> answer) {
         try {
             Stage stage = new Stage();
             FXMLLoader loader = new FXMLLoader();
-            URL xmlUrl = App.class.getResource("/fxmls/messageScene.fxml");
+            URL xmlUrl = App.class.getResource("/fxmls/helpScene.fxml");
             loader.setLocation(xmlUrl);
             stage.setScene(new Scene(loader.load()));
 
-            MessageSceneController controller = loader.getController();
-            controller.errorLabel.setText(App.getRB().getString(message));
+            helpScene controller = loader.getController();
+            controller.helpText.setText(App.getRB().getString("help_title"));
+            for (String command : answer.keySet()) {
+                controller.helpText.appendText("\n" + command + " - " + App.getRB().getString(answer.get(command)));
+            }
             controller.okButton.setText(App.getRB().getString("continueOK"));
             stage.initModality(Modality.APPLICATION_MODAL);
             stage.showAndWait();

@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox alignment="TOP_CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" spacing="10.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ru.nanikon.FlatCollection.scenceControllers.infoScene">
+   <children>
+      <Label fx:id="infoTitle" text="Label" />
+      <FlowPane hgap="5.0" vgap="10.0">
+         <children>
+            <Label fx:id="typeTextLabel" text="Label" />
+            <Label fx:id="typeLabel" text="Label" />
+         </children>
+      </FlowPane>
+      <FlowPane hgap="5.0" vgap="10.0">
+         <children>
+            <Label fx:id="sizeTextLabel" text="Label" />
+            <Label fx:id="sizeLabel" text="Label" />
+         </children>
+      </FlowPane>
+      <Button fx:id="continueButton" mnemonicParsing="false" text="Button" onAction="#continueWork"/>
+   </children>
+   <padding>
+      <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+   </padding>
+</VBox>

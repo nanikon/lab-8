@@ -15,7 +15,7 @@ import java.io.Serializable;
  */
 public class InsertCommand implements Command, Serializable {
     private AbstractArgument<?>[] params = {new IntArg(), new FlatArg()};
-    private String information = "'insert_at index {element}' - добавить новый элемент в заданную позицию";
+    private String information = "insert_help";
     private String login;
     private String password;
 
